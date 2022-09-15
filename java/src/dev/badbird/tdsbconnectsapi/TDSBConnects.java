@@ -21,7 +21,6 @@ public class TDSBConnects {
 
     public TDSBConnects(String username, String password) {
         authenticationInfo = new TokenRequest(username, password).send();
-        System.out.println(GSON.toJson(authenticationInfo));
     }
 
     public TDSBConnects(TokenResponse authenticationInfo) {
