@@ -3,6 +3,7 @@ package dev.badbird.tdsbconnectsapi.schema.response;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.annotations.SerializedName;
+import dev.badbird.tdsbconnectsapi.util.object.SimpleUserInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,8 @@ public class UserResponse {
     private int[] role;
     @SerializedName("SchoolCodeList")
     private SchoolCodeList[] schoolCodeList;
+    @SerializedName("SchoolList")
+    private SchoolList[] schoolList;
     @SerializedName("Email")
     private String email;
     @SerializedName("PrincipalEmailsList")
@@ -86,6 +89,10 @@ public class UserResponse {
     @SerializedName("TimetableCache")
     private String timetableCache;
 
+    public SimpleUserInfo toSimpleUserInfo() {
+        return new SimpleUserInfo(this);
+    }
+
     @Getter
     public static class SchoolCodeList {
         @SerializedName("AssignedRoleId")
@@ -93,7 +100,7 @@ public class UserResponse {
         @SerializedName("SchoolCode")
         private String schoolCode;
         @SerializedName("StudentInfo")
-        private UserResponse user;
+        private StudentInfo studentInfo;
     }
 
     @Getter

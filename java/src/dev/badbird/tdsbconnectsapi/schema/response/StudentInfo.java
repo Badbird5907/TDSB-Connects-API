@@ -25,4 +25,11 @@ public class StudentInfo {
     private String schoolYearTrack;
     @SerializedName("CurrentGradeLevel")
     private String currentGradeLevel;
+    //2 yrs 1 mth
+    public int getAgeYears() {
+        return Integer.parseInt(age.split(" ")[0]);
+    }
+    public int getAgeMonths() {
+        return Integer.parseInt(age.split(" ")[2]);
+    }
 }

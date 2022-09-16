@@ -21,7 +21,7 @@ public interface APIRequest<T> {
                 .url(TDSBConnects.API_BASE + endpoint)
                 .header("X-Client-App-Info", TDSBConnects.CLIENT_ID);
         if (!(this instanceof TokenRequest)) {
-            tdsbConnects.getAuthenticationInfo().refreshIfNeeded();
+            tdsbConnects.getAuthenticationInfo().refreshIfNeeded(tdsbConnects);
             request.header("Authorization", "Bearer " + tdsbConnects.getAuthenticationInfo().getAccessToken());
         }
         Request.Builder a = addData(request);
