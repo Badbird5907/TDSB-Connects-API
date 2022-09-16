@@ -33,12 +33,9 @@ public class TokenRequest implements APIRequest<TokenResponse> {
         return "/token";
     }
 
-    @SneakyThrows
     @Override
-    public TokenResponse onResponse(Response response) {
-        ResponseBody body = response.body();
-        String bodyString = body == null ? "" : body.string();
-        return tdsbConnects.GSON.fromJson(bodyString, TokenResponse.class);
+    public Class<TokenResponse> getGenericClass() {
+        return TokenResponse.class;
     }
 
     @Override

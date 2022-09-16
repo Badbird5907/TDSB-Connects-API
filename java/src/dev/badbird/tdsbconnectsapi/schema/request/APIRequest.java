@@ -1,12 +1,12 @@
 package dev.badbird.tdsbconnectsapi.schema.request;
 
+import com.google.gson.reflect.TypeToken;
 import dev.badbird.tdsbconnectsapi.TDSBConnects;
 import dev.badbird.tdsbconnectsapi.schema.request.impl.auth.TokenRequest;
 import lombok.SneakyThrows;
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
+
+import java.lang.reflect.ParameterizedType;
 
 public interface APIRequest<T> {
     OkHttpClient CLIENT = new OkHttpClient();
@@ -29,11 +29,18 @@ public interface APIRequest<T> {
 
         Call call = CLIENT.newCall(request.build());
         try (Response response = call.execute()) {
-            return onResponse(response);
+            return onResponse(response, tdsbConnects);
         }
     }
 
-    T onResponse(Response response);
+    @SneakyThrows
+    default T onResponse(Response response, TDSBConnects tdsbConnects) {
+        ResponseBody body = response.body();
+        String bodyString = body == null ? "" : body.string();
+        return tdsbConnects.GSON.fromJson(bodyString, getGenericClass());
+    }
+
+    Class<T> getGenericClass();
 
 
     Request.Builder addData(Request.Builder builder);

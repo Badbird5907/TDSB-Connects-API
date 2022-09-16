@@ -18,12 +18,9 @@ public class GetUserInfo implements APIRequest<UserResponse> {
         return "/api/Account/GetUserInfo";
     }
 
-    @SneakyThrows
     @Override
-    public UserResponse onResponse(Response response) {
-        ResponseBody body = response.body();
-        String bodyString = body == null ? "" : body.string();
-        return tdsbConnects.GSON.fromJson(bodyString, UserResponse.class);
+    public Class<UserResponse> getGenericClass() {
+        return UserResponse.class;
     }
 
     @Override
