@@ -11,13 +11,17 @@ public interface APIRequest<T> {
     OkHttpClient CLIENT = new OkHttpClient();
     String getEndpoint();
     @SneakyThrows
-    default T send() {
+    default T send(TDSBConnects tdsbConnects) {
         String endpoint = getEndpoint();
         if (endpoint.startsWith("/")) endpoint = endpoint.substring(1);
         Request.Builder request = new Request.Builder()
                 .url(TDSBConnects.API_BASE  + endpoint)
                 .header("X-Client-App-Info", TDSBConnects.CLIENT_ID)
                 ;
+        if (!(this instanceof TokenRequest)) {
+            tdsbConnects.getAuthenticationInfo().refreshIfNeeded();
+            request.header("Authorization", "Bearer " + tdsbConnects.getAuthenticationInfo().getAccessToken());
+        }
         request = addData(request);
 
         Call call = CLIENT.newCall(request.build());

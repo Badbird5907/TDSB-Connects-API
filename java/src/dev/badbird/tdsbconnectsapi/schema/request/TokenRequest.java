@@ -14,13 +14,17 @@ public class TokenRequest implements APIRequest<TokenResponse> {
 
     private String refreshToken = null;
 
-    public TokenRequest(String username, String password) {
+    private TDSBConnects tdsbConnects;
+
+    public TokenRequest(String username, String password, TDSBConnects tdsbConnects) {
         this.username = username;
         this.password = password;
+        this.tdsbConnects = tdsbConnects;
     }
 
-    public TokenRequest(String refreshToken) {
+    public TokenRequest(String refreshToken, TDSBConnects tdsbConnects) {
         this.refreshToken = refreshToken;
+        this.tdsbConnects = tdsbConnects;
     }
 
     @Override
@@ -33,7 +37,7 @@ public class TokenRequest implements APIRequest<TokenResponse> {
     public TokenResponse onResponse(Response response) {
         ResponseBody body = response.body();
         String bodyString = body == null ? "" : body.string();
-        return TDSBConnects.GSON.fromJson(bodyString, TokenResponse.class);
+        return tdsbConnects.GSON.fromJson(bodyString, TokenResponse.class);
     }
 
     @Override
