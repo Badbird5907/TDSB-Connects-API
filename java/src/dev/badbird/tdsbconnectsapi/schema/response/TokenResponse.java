@@ -2,7 +2,7 @@ package dev.badbird.tdsbconnectsapi.schema.response;
 
 import com.google.gson.annotations.SerializedName;
 import dev.badbird.tdsbconnectsapi.TDSBConnects;
-import dev.badbird.tdsbconnectsapi.schema.request.TokenRequest;
+import dev.badbird.tdsbconnectsapi.schema.request.impl.auth.TokenRequest;
 import lombok.Getter;
 import lombok.Setter;
 

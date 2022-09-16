@@ -2,9 +2,10 @@ package dev.badbird.tdsbconnectsapi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.badbird.tdsbconnectsapi.schema.request.TokenRequest;
+import dev.badbird.tdsbconnectsapi.schema.request.impl.auth.TokenRequest;
 import dev.badbird.tdsbconnectsapi.schema.response.TokenResponse;
 import dev.badbird.tdsbconnectsapi.util.GsonInstanceAdapter;
+import dev.badbird.tdsbconnectsapi.util.GsonStringAdapter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class TDSBConnects {
     public final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .registerTypeAdapter(TDSBConnects.class, new GsonInstanceAdapter(this))
+            .registerTypeAdapter(String.class, new GsonStringAdapter())
             .create();
 
     private final String username, password;

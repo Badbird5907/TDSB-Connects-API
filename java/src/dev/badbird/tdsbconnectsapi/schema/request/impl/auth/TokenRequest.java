@@ -1,6 +1,7 @@
-package dev.badbird.tdsbconnectsapi.schema.request;
+package dev.badbird.tdsbconnectsapi.schema.request.impl.auth;
 
 import dev.badbird.tdsbconnectsapi.TDSBConnects;
+import dev.badbird.tdsbconnectsapi.schema.request.APIRequest;
 import dev.badbird.tdsbconnectsapi.schema.response.TokenResponse;
 import lombok.Getter;
 import lombok.Setter;
