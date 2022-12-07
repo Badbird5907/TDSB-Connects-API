@@ -6,6 +6,7 @@ import dev.badbird.tdsbconnectsapi.schema.request.impl.auth.TokenRequest;
 import lombok.SneakyThrows;
 import okhttp3.*;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 
 public interface APIRequest<T> {
@@ -33,11 +34,39 @@ public interface APIRequest<T> {
         }
     }
 
+    @SuppressWarnings({"CastCanBeRemovedNarrowingVariableType", "unchecked"})
     @SneakyThrows
     default T onResponse(Response response, TDSBConnects tdsbConnects) {
         ResponseBody body = response.body();
         String bodyString = body == null ? "" : body.string();
-        return tdsbConnects.GSON.fromJson(bodyString, getGenericClass());
+        Object obj = tdsbConnects.GSON.fromJson(bodyString, getGenericClass());
+        injectTDSBConnects(obj, tdsbConnects); //TODO this sucks
+        return (T) obj;
+    }
+
+    @SneakyThrows
+    default void injectTDSBConnects(Object inst, TDSBConnects tdsbConnects) {
+        injectTDSBConnects(inst.getClass().getDeclaredFields(), inst, tdsbConnects);
+        // inject all superclasses
+        Class<?> superclass = inst.getClass().getSuperclass();
+        while (isValidSuperClass(superclass)) {
+            injectTDSBConnects(superclass.getDeclaredFields(), inst, tdsbConnects);
+            superclass = superclass.getSuperclass();
+        }
+    }
+    @SneakyThrows
+    default void injectTDSBConnects(Field[] fields, Object inst, TDSBConnects tdsbConnects) {
+        for (Field field : fields) {
+            field.setAccessible(true);
+            if (field.getType() == TDSBConnects.class && field.get(inst) == null) {
+                field.set(inst, tdsbConnects);
+            }
+        }
+    }
+
+    default boolean isValidSuperClass(Class<?> clazz) {
+        // check if class isnt object etc... because we want to limit the times we recurse
+        return clazz != null && clazz != Object.class;
     }
 
     Class<T> getGenericClass();

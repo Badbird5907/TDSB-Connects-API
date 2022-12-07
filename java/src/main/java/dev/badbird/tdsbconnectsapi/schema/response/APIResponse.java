@@ -1,10 +1,12 @@
 package dev.badbird.tdsbconnectsapi.schema.response;
 
-import com.google.gson.Gson;
+import dev.badbird.tdsbconnectsapi.TDSBConnects;
 
 public class APIResponse {
+    private TDSBConnects tdsbConnects;
+
     @Override
     public String toString() {
-        return new Gson().toJson(this); // TODO: use gson from TDSBConnects
+        return tdsbConnects.GSON.toJson(this); // TODO: use gson from TDSBConnects
     }
 }
