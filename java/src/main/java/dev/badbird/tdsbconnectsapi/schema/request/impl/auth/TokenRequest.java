@@ -5,7 +5,8 @@ import dev.badbird.tdsbconnectsapi.schema.request.APIRequest;
 import dev.badbird.tdsbconnectsapi.schema.response.impl.TokenResponse;
 import lombok.Getter;
 import lombok.Setter;
-import okhttp3.*;
+import okhttp3.FormBody;
+import okhttp3.Request;
 
 @Getter
 @Setter

@@ -13,6 +13,7 @@ public class SimpleUserInfo {
     private int schoolCode = -1, d2lUserId;
     private UserResponse userResponse;
     private UserResponse.SchoolList schoolInfo;
+
     public SimpleUserInfo(UserResponse response) {
         this.userResponse = response;
         this.userId = response.getUserId();
@@ -36,6 +37,7 @@ public class SimpleUserInfo {
     public String getFirstName() {
         return studentInfo.getFirstName();
     }
+
     public String getLastName() {
         return studentInfo.getLastName();
     }

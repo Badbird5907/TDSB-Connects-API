@@ -8,6 +8,7 @@ import okhttp3.Request;
 @Data
 public class GetAnnouncements implements APIRequest<AnnouncementResponse> {
     private final int schoolID, start, end;
+
     @Override
     public String getEndpoint() {
         return "/api/Announcement/D2L/GetNews/" + schoolID + "/filter/Published/skip/" + start + "/take/" + end;

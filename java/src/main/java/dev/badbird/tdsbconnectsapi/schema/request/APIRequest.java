@@ -1,13 +1,11 @@
 package dev.badbird.tdsbconnectsapi.schema.request;
 
-import com.google.gson.reflect.TypeToken;
 import dev.badbird.tdsbconnectsapi.TDSBConnects;
 import dev.badbird.tdsbconnectsapi.schema.request.impl.auth.TokenRequest;
 import lombok.SneakyThrows;
 import okhttp3.*;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 
 public interface APIRequest<T> {
     OkHttpClient CLIENT = new OkHttpClient();
@@ -54,6 +52,7 @@ public interface APIRequest<T> {
             superclass = superclass.getSuperclass();
         }
     }
+
     @SneakyThrows
     default void injectTDSBConnects(Field[] fields, Object inst, TDSBConnects tdsbConnects) {
         for (Field field : fields) {

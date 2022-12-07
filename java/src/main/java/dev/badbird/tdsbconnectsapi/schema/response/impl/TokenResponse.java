@@ -32,6 +32,7 @@ public class TokenResponse extends APIResponse {
     public boolean isRefreshTokenExpired() {
         return System.currentTimeMillis() / 1000 >= Long.parseLong(refreshTokenExpiresIn);
     }
+
     public void refreshIfNeeded(TDSBConnects tdsbConnects) {
         if (isRefreshTokenExpired()) {
             tdsbConnects.setAuthenticationInfo(new TokenRequest(tdsbConnects.getUsername(), tdsbConnects.getPassword(), tdsbConnects).send(tdsbConnects));
@@ -39,7 +40,6 @@ public class TokenResponse extends APIResponse {
         }
         if (isExpired()) {
             tdsbConnects.setAuthenticationInfo(new TokenRequest(refreshToken, tdsbConnects).send(tdsbConnects));
-            return;
         }
     }
 }

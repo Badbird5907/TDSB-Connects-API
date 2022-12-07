@@ -131,6 +131,7 @@ public class UserResponse extends APIResponse {
         @SerializedName("BrowserUrl")
         private String browserUrl;
     }
+
     @Getter
     public static class UserNavMenu {
         @SerializedName("SchoolCode")
@@ -140,6 +141,7 @@ public class UserResponse extends APIResponse {
         @SerializedName("UserMenus")
         private UserMenu[] userMenus;
     }
+
     @Getter
     public static class UserFeaturePermission {
         @SerializedName("FeatureId")
@@ -147,6 +149,7 @@ public class UserResponse extends APIResponse {
         @SerializedName("PermissionTypeId")
         private int permissionTypeId;
     }
+
     @Getter
     public static class UserFeaturePermissions {
         @SerializedName("UserRoleId")
@@ -154,6 +157,7 @@ public class UserResponse extends APIResponse {
         @SerializedName("UserFeaturePermissions")
         private UserFeaturePermission[] userFeaturePermissions;
     }
+
     @Getter
     public static class SchoolList {
         @SerializedName("SchoolCode")
@@ -162,6 +166,7 @@ public class UserResponse extends APIResponse {
         private String schoolName;
         @SerializedName("IsOnboard")
         private boolean isOnboard;
+
         public static class SchoolSetting {
             @SerializedName("Id")
             private int id;

@@ -31,6 +31,7 @@ public class TDSBConnects {
         this.password = password;
         authenticationInfo = new TokenRequest(username, password, this).send(this);
     }
+
     public TDSBConnects(String username, String password, TokenResponse authenticationInfo) {
         this.username = username;
         this.password = password;
