@@ -24,4 +24,8 @@ public class Utilities {
         }
     }
 
+    public static String getToday() {
+        return dateFormat.format(new Date());
+    }
+
 }

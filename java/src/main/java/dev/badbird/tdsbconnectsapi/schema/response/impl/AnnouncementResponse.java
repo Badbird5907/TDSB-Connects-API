@@ -15,7 +15,7 @@ public class AnnouncementResponse extends APIResponse {
     private String accessToken;
 
     @Data
-    public class NewsItem {
+    public static class NewsItem {
         @SerializedName("Id")
         private long id;
         @SerializedName("IsHidden")
@@ -49,7 +49,7 @@ public class AnnouncementResponse extends APIResponse {
     }
 
     @Data
-    public class Body {
+    public static class Body {
         @SerializedName("Text")
         private String text;
         @SerializedName("Html")

@@ -11,5 +11,6 @@ public class UtilitiesTest {
         long out = Utilities.parseDateToUnixMillis(in);
         System.out.println("Out: " + out);
         assertEquals(1671153030012L, out);
+        System.out.println("Today: " + Utilities.getToday());
     }
 }
