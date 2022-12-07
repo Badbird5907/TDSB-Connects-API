@@ -48,3 +48,10 @@ public class TDSBConnects {
         return request.send(this);
     }
 }
+// TODO: Not sure where to put this so I'll put this here:
+// Some routes fail and return a message instead of data sometimes
+// We have to implement a way to handle this.
+// Example: GET /api/GoogleCalendar/GetEvents/<school>?timeMin=month/day/year hour:min:sec&timeMax=month/day/year hour:min:sec
+// Returns {
+//    "Message": "There was no calendar available for your profile."
+//} for me
