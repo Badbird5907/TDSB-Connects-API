@@ -27,6 +27,7 @@ tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 sourceSets {
-    main.get().java.srcDirs("java/src")
-    main.get().resources.srcDirs("java/resources")
+    getByName("test") {
+        java.srcDir("src/main/test")
+    }
 }

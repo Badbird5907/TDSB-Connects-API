@@ -1,12 +1,11 @@
 package dev.badbird.tdsbconnectsapi.schema.request.impl.announcements;
 
 import dev.badbird.tdsbconnectsapi.schema.request.APIRequest;
-import dev.badbird.tdsbconnectsapi.schema.response.AnnouncementResponse;
-import lombok.RequiredArgsConstructor;
+import dev.badbird.tdsbconnectsapi.schema.response.impl.AnnouncementResponse;
+import lombok.Data;
 import okhttp3.Request;
-import okhttp3.Response;
 
-@RequiredArgsConstructor
+@Data
 public class GetAnnouncements implements APIRequest<AnnouncementResponse> {
     private final int schoolID, start, end;
     @Override

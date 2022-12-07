@@ -1,17 +1,12 @@
 package dev.badbird.tdsbconnectsapi.schema.request.impl.account;
 
-import dev.badbird.tdsbconnectsapi.TDSBConnects;
 import dev.badbird.tdsbconnectsapi.schema.request.APIRequest;
-import dev.badbird.tdsbconnectsapi.schema.response.UserResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import dev.badbird.tdsbconnectsapi.schema.response.impl.UserResponse;
+import lombok.Data;
 import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
-@RequiredArgsConstructor
+@Data
 public class GetUserInfo implements APIRequest<UserResponse> {
-    private final TDSBConnects tdsbConnects;
 
     @Override
     public String getEndpoint() {

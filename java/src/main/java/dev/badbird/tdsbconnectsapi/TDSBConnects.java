@@ -2,8 +2,9 @@ package dev.badbird.tdsbconnectsapi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.badbird.tdsbconnectsapi.schema.request.APIRequest;
 import dev.badbird.tdsbconnectsapi.schema.request.impl.auth.TokenRequest;
-import dev.badbird.tdsbconnectsapi.schema.response.TokenResponse;
+import dev.badbird.tdsbconnectsapi.schema.response.impl.TokenResponse;
 import dev.badbird.tdsbconnectsapi.util.GsonInstanceAdapter;
 import dev.badbird.tdsbconnectsapi.util.GsonStringAdapter;
 import lombok.Getter;
@@ -40,5 +41,9 @@ public class TDSBConnects {
         this.username = null;
         this.password = null;
         this.authenticationInfo = authenticationInfo;
+    }
+
+    public <T> T call(APIRequest<T> request) {
+        return request.send(this);
     }
 }

@@ -1,14 +1,15 @@
-package dev.badbird.tdsbconnectsapi.schema.response;
+package dev.badbird.tdsbconnectsapi.schema.response.impl;
 
 import com.google.gson.annotations.SerializedName;
 import dev.badbird.tdsbconnectsapi.TDSBConnects;
 import dev.badbird.tdsbconnectsapi.schema.request.impl.auth.TokenRequest;
+import dev.badbird.tdsbconnectsapi.schema.response.APIResponse;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class TokenResponse {
+public class TokenResponse extends APIResponse {
     @SerializedName("access_token")
     private String accessToken;
     @SerializedName("token_type")

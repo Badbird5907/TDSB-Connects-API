@@ -2,10 +2,9 @@ package dev.badbird.tdsbconnectsapi.schema.request.impl.auth;
 
 import dev.badbird.tdsbconnectsapi.TDSBConnects;
 import dev.badbird.tdsbconnectsapi.schema.request.APIRequest;
-import dev.badbird.tdsbconnectsapi.schema.response.TokenResponse;
+import dev.badbird.tdsbconnectsapi.schema.response.impl.TokenResponse;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import okhttp3.*;
 
 @Getter

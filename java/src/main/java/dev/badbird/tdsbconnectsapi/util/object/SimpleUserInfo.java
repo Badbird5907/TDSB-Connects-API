@@ -1,7 +1,7 @@
 package dev.badbird.tdsbconnectsapi.util.object;
 
-import dev.badbird.tdsbconnectsapi.schema.response.StudentInfo;
-import dev.badbird.tdsbconnectsapi.schema.response.UserResponse;
+import dev.badbird.tdsbconnectsapi.schema.response.impl.StudentInfo;
+import dev.badbird.tdsbconnectsapi.schema.response.impl.UserResponse;
 import lombok.Getter;
 import lombok.Setter;
 

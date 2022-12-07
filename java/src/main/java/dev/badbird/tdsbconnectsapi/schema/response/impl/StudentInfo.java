@@ -1,6 +1,7 @@
-package dev.badbird.tdsbconnectsapi.schema.response;
+package dev.badbird.tdsbconnectsapi.schema.response.impl;
 
 import com.google.gson.annotations.SerializedName;
+import dev.badbird.tdsbconnectsapi.schema.response.APIResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class StudentInfo {
+public class StudentInfo extends APIResponse {
     @SerializedName("PersonId")
     private String personId;
     @SerializedName("LastName")
