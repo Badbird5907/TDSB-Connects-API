@@ -3,8 +3,10 @@ package dev.badbird.tdsbconnectsapi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.badbird.tdsbconnectsapi.schema.request.APIRequest;
+import dev.badbird.tdsbconnectsapi.schema.request.impl.account.GetUserInfo;
 import dev.badbird.tdsbconnectsapi.schema.request.impl.auth.TokenRequest;
 import dev.badbird.tdsbconnectsapi.schema.response.impl.TokenResponse;
+import dev.badbird.tdsbconnectsapi.schema.response.impl.UserResponse;
 import dev.badbird.tdsbconnectsapi.util.GsonInstanceAdapter;
 import dev.badbird.tdsbconnectsapi.util.GsonStringAdapter;
 import lombok.Getter;
@@ -23,26 +25,24 @@ public class TDSBConnects {
 
     private final String username, password;
 
-
     private TokenResponse authenticationInfo;
+    private UserResponse userData;
+
+    public void requestData() {
+        userData = call(new GetUserInfo());
+    }
+
+    public void login() {
+        authenticationInfo = call(new TokenRequest(username, password, this));
+    }
 
     public TDSBConnects(String username, String password) {
         this.username = username;
         this.password = password;
-        authenticationInfo = new TokenRequest(username, password, this).send(this);
+        login();
+        requestData();
     }
 
-    public TDSBConnects(String username, String password, TokenResponse authenticationInfo) {
-        this.username = username;
-        this.password = password;
-        this.authenticationInfo = authenticationInfo;
-    }
-
-    public TDSBConnects(TokenResponse authenticationInfo) {
-        this.username = null;
-        this.password = null;
-        this.authenticationInfo = authenticationInfo;
-    }
 
     public <T> T call(APIRequest<T> request) {
         return request.send(this);

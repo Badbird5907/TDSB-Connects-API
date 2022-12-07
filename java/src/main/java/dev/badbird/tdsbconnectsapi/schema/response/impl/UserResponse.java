@@ -182,4 +182,8 @@ public class UserResponse extends APIResponse {
             private String sessionEnd;
         }
     }
+
+    public int getSchoolID() {
+        return Integer.parseInt(schoolCodeList[0].getSchoolCode());
+    }
 }

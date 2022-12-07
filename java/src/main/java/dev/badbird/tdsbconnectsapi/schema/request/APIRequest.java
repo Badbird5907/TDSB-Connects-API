@@ -38,7 +38,15 @@ public interface APIRequest<T> {
         ResponseBody body = response.body();
         String bodyString = body == null ? "" : body.string();
         Object obj = tdsbConnects.GSON.fromJson(bodyString, getGenericClass());
-        injectTDSBConnects(obj, tdsbConnects); //TODO this sucks
+        //check if obj is an array
+        if (obj instanceof Object[]) {
+            T[] arr = (T[]) obj;
+            for (T t : arr) {
+                injectTDSBConnects(t, tdsbConnects);
+            }
+        } else {
+            injectTDSBConnects(obj, tdsbConnects); //TODO this sucks
+        }
         return (T) obj;
     }
 

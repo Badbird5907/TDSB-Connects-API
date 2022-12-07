@@ -7,14 +7,18 @@ import org.junit.jupiter.api.Test;
 public class AuthTest {
     @Test
     public void authTest() {
+        TDSBConnects tdsbConnects = getTDSBConnects();
+        UserResponse userResponse = tdsbConnects.call(new GetUserInfo());
+        System.out.println(userResponse);
+        System.out.println("Auth Info: " + tdsbConnects.getAuthenticationInfo());
+    }
+
+    public static TDSBConnects getTDSBConnects() {
         String username = System.getenv("TDSB_USERNAME");
         String password = System.getenv("TDSB_PASSWORD");
         if (username == null || password == null) {
             throw new RuntimeException("Please set the environment variables TDSB_USERNAME and TDSB_PASSWORD");
         }
-        TDSBConnects tdsbConnects = new TDSBConnects(username, password);
-        UserResponse userResponse = tdsbConnects.call(new GetUserInfo());
-        System.out.println(userResponse);
-        System.out.println("Auth Info: " + tdsbConnects.getAuthenticationInfo());
+        return new TDSBConnects(username, password);
     }
 }

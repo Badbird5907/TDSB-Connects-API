@@ -6,7 +6,7 @@ import lombok.Data;
 import okhttp3.Request;
 
 @Data
-public class GetAnnouncements implements APIRequest<AnnouncementResponse> {
+public class GetAnnouncements implements APIRequest<AnnouncementResponse[]> {
     private final int schoolID, start, end;
 
     @Override
@@ -15,8 +15,8 @@ public class GetAnnouncements implements APIRequest<AnnouncementResponse> {
     }
 
     @Override
-    public Class<AnnouncementResponse> getGenericClass() {
-        return AnnouncementResponse.class;
+    public Class<AnnouncementResponse[]> getGenericClass() {
+        return AnnouncementResponse[].class;
     }
 
     @Override
