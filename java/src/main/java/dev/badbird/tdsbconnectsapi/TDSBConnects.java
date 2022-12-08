@@ -12,6 +12,10 @@ import dev.badbird.tdsbconnectsapi.util.GsonStringAdapter;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
 @Getter
 @Setter
 public class TDSBConnects {
@@ -22,29 +26,61 @@ public class TDSBConnects {
             .registerTypeAdapter(TDSBConnects.class, new GsonInstanceAdapter(this))
             .registerTypeAdapter(String.class, new GsonStringAdapter())
             .create();
+    private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1); // TODO: config option for this
 
     private final String username, password;
 
     private TokenResponse authenticationInfo;
     private UserResponse userData;
-
-    public void requestData() {
-        userData = call(new GetUserInfo());
-    }
-
+    private Runnable readyCallback;
+    private boolean ready = false;
     public void login() {
-        authenticationInfo = call(new TokenRequest(username, password, this));
+        call(new TokenRequest(username, password, this)).thenAccept(response -> {
+            System.out.println("Logged in! - " + response);
+            authenticationInfo = response;
+            try {
+                call(new GetUserInfo()).thenAccept(resp -> {
+                    System.out.println("Got user data!");
+                    userData = resp;
+                    ready = true;
+                    if (readyCallback != null) readyCallback.run();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).exceptionally((err)-> {
+            err.printStackTrace();
+            throw new RuntimeException(err);
+        });
     }
 
-    public TDSBConnects(String username, String password) {
+    public TDSBConnects(String username, String password, Runnable onReady) {
         this.username = username;
         this.password = password;
+        this.readyCallback = onReady;
         login();
-        requestData();
+    }
+    public TDSBConnects(String username, String password) {
+        this(username, password, null);
     }
 
+    /**
+     * Blocking call to the API
+     *
+     * @param request
+     * @param <T>
+     * @return
+     */
+    public <T> T callBlocking(APIRequest<T> request) {
+        try {
+            return request.send(this).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-    public <T> T call(APIRequest<T> request) {
+    public <T> CompletableFuture<T> call(APIRequest<T> request) {
         return request.send(this);
     }
 }

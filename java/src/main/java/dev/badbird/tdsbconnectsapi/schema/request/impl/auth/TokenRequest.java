@@ -45,11 +45,20 @@ public class TokenRequest implements APIRequest<TokenResponse> {
             formBody.add("grant_type", "password");
             formBody.add("username", username);
             formBody.add("password", password);
+            System.out.println("Username - " + username + " | pwd: " + password);
         } else {
             formBody.add("grant_type", "refresh_token");
             formBody.add("refresh_token", refreshToken);
+            System.out.println("Refreshing");
         }
 
         return builder.post(formBody.build());
+    }
+
+    @Override
+    public void validateResponse(String bodyString) {
+        if (bodyString.contains("\"error\"")) {
+            throw new RuntimeException("Failed to log in!");
+        }
     }
 }

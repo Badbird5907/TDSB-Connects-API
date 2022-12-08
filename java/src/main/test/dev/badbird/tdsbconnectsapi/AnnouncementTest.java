@@ -11,7 +11,7 @@ public class AnnouncementTest {
     public void announcementTest() {
         TDSBConnects tdsbConnects = AuthTest.getTDSBConnects();
 
-        AnnouncementResponse[] resp = tdsbConnects.call(
+        AnnouncementResponse[] resp = tdsbConnects.callBlocking(
                 new GetAnnouncements(
                         tdsbConnects.getUserData().getSchoolID(),
                         0,

@@ -4,8 +4,11 @@ import dev.badbird.tdsbconnectsapi.TDSBConnects;
 import dev.badbird.tdsbconnectsapi.schema.request.impl.auth.TokenRequest;
 import lombok.SneakyThrows;
 import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.concurrent.CompletableFuture;
 
 public interface APIRequest<T> {
     OkHttpClient CLIENT = new OkHttpClient();
@@ -13,23 +16,50 @@ public interface APIRequest<T> {
     String getEndpoint();
 
     @SneakyThrows
-    default T send(TDSBConnects tdsbConnects) {
+    default CompletableFuture<T> send(TDSBConnects tdsbConnects) {
+        System.out.println("Sending request to " + getEndpoint());
+
+        CompletableFuture<T> future = new CompletableFuture<>();
         String endpoint = getEndpoint();
         if (endpoint.startsWith("/")) endpoint = endpoint.substring(1);
-        Request.Builder request = new Request.Builder()
-                .url(TDSBConnects.API_BASE + endpoint)
-                .header("X-Client-App-Info", TDSBConnects.CLIENT_ID);
-        if (!(this instanceof TokenRequest)) {
-            tdsbConnects.getAuthenticationInfo().refreshIfNeeded(tdsbConnects);
-            request.header("Authorization", "Bearer " + tdsbConnects.getAuthenticationInfo().getAccessToken());
-        }
-        Request.Builder a = addData(request);
-        if (a != null) request = a;
+        String finalEndpoint = endpoint;
+        tdsbConnects.getExecutor().submit(()-> {
+            try {
+                Request.Builder request = new Request.Builder()
+                        .url(TDSBConnects.API_BASE + finalEndpoint)
+                        .header("X-Client-App-Info", TDSBConnects.CLIENT_ID);
+                if (!(this instanceof TokenRequest)) {
+                    tdsbConnects.getAuthenticationInfo().refreshIfNeeded(tdsbConnects);
+                    request.header("Authorization", "Bearer " + tdsbConnects.getAuthenticationInfo().getAccessToken());
+                }
+                Request.Builder a = addData(request);
+                if (a != null) request = a;
 
-        Call call = CLIENT.newCall(request.build());
-        try (Response response = call.execute()) {
-            return onResponse(response, tdsbConnects);
-        }
+                Call call = CLIENT.newCall(request.build());
+                System.out.println("Queuing request");
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        System.out.println("Request failed");
+                        future.completeExceptionally(e);
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        System.out.println("Request succeeded");
+                        try {
+                            T res = APIRequest.this.onResponse(response, tdsbConnects);
+                            future.complete(res);
+                        } catch (Exception e) {
+                            future.completeExceptionally(e);
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        return future;
     }
 
     @SuppressWarnings({"CastCanBeRemovedNarrowingVariableType", "unchecked"})
@@ -37,6 +67,8 @@ public interface APIRequest<T> {
     default T onResponse(Response response, TDSBConnects tdsbConnects) {
         ResponseBody body = response.body();
         String bodyString = body == null ? "" : body.string();
+        validateResponse(bodyString);
+        System.out.println("Body: " + bodyString);
         Object obj = tdsbConnects.GSON.fromJson(bodyString, getGenericClass());
         //check if obj is an array
         if (obj instanceof Object[]) {
@@ -80,4 +112,8 @@ public interface APIRequest<T> {
 
 
     Request.Builder addData(Request.Builder builder);
+
+    default void validateResponse(String bodyString) {
+
+    }
 }

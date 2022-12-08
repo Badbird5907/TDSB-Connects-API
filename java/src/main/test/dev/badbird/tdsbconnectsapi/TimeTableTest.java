@@ -8,7 +8,7 @@ public class TimeTableTest {
     @Test
     public void testTimeTable() {
         TDSBConnects tdsbConnects = AuthTest.getTDSBConnects();
-        TimeTableResponse response = tdsbConnects.call(new TimeTableRequest(450, "07122022"));
+        TimeTableResponse response = tdsbConnects.callBlocking(new TimeTableRequest(450, "07122022"));
         System.out.println("TimeTable: " + response);
     }
 }

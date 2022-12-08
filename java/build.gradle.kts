@@ -2,11 +2,12 @@ plugins {
     id("java")
     id("maven-publish")
     id("signing")
+    id("io.freefair.lombok") version "6.6"
     //id("com.github.johnrengelman.shadow") version "7.1.2" // TODO - make shadowjar work
 }
 
 group = "dev.badbird"
-version = "0.0.1-DEV"
+version = "0.0.3-DEV"
 description = "TDSB Connects API Wrapper"
 
 repositories {
@@ -16,12 +17,6 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-
-    compileOnly("org.projectlombok:lombok:1.18.24")
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
-
-    testCompileOnly("org.projectlombok:lombok:1.18.24")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.24")
 
     implementation("com.google.code.gson:gson:2.9.1")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
@@ -106,10 +101,10 @@ tasks {
     }
     jar {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        from({
-            configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
-        })
+        //from({
+        //    configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
+        //})
     }
 }
 //tasks.getByName("jar").dependsOn(tasks.getByName("shadowJar"))
-tasks.getByName("test").onlyIf { tasks.getByName("test").hasProperty("test") }
+//tasks.getByName("test").onlyIf { tasks.getByName("test").hasProperty("test") }

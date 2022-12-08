@@ -1,2 +1,2 @@
-rootProject.name = "TDSB-API-Mappings"
+rootProject.name = "TDSBConnects"
 

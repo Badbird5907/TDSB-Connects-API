@@ -25,21 +25,29 @@ public class TokenResponse extends APIResponse {
     @SerializedName(".expires")
     private String formattedExpires; // Same as above
 
+    private String error, errorDescription, httpStatusCode;
+
     public boolean isExpired() {
         return System.currentTimeMillis() / 1000 >= expiresIn;
     }
 
     public boolean isRefreshTokenExpired() {
+        System.out.println("Refresh expires: " + refreshTokenExpiresIn);
+        if (refreshTokenExpiresIn == null) return true;
         return System.currentTimeMillis() / 1000 >= Long.parseLong(refreshTokenExpiresIn);
     }
 
+    /**
+     * Blocking request checking if the token is expired & refreshing if needed
+     * @param tdsbConnects
+     */
     public void refreshIfNeeded(TDSBConnects tdsbConnects) {
         if (isRefreshTokenExpired()) {
-            tdsbConnects.setAuthenticationInfo(new TokenRequest(tdsbConnects.getUsername(), tdsbConnects.getPassword(), tdsbConnects).send(tdsbConnects));
+            tdsbConnects.call(new TokenRequest(tdsbConnects.getUsername(), tdsbConnects.getPassword(), tdsbConnects)).thenAccept(tdsbConnects::setAuthenticationInfo);
             return;
         }
         if (isExpired()) {
-            tdsbConnects.setAuthenticationInfo(new TokenRequest(refreshToken, tdsbConnects).send(tdsbConnects));
+            tdsbConnects.call(new TokenRequest(refreshToken, tdsbConnects)).thenAccept(tdsbConnects::setAuthenticationInfo);
         }
     }
 }
