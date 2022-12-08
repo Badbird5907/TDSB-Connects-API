@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "dev.badbird"
-version = "0.0.3-DEV"
+version = "0.0.4-DEV"
 description = "TDSB Connects API Wrapper"
 
 repositories {
