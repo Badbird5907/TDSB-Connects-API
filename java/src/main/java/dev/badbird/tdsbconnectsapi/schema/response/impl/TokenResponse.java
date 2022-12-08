@@ -32,7 +32,6 @@ public class TokenResponse extends APIResponse {
     }
 
     public boolean isRefreshTokenExpired() {
-        System.out.println("Refresh expires: " + refreshTokenExpiresIn);
         if (refreshTokenExpiresIn == null) return true;
         return System.currentTimeMillis() / 1000 >= Long.parseLong(refreshTokenExpiresIn);
     }

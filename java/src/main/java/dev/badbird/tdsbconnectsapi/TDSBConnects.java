@@ -15,6 +15,7 @@ import lombok.Setter;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.function.Consumer;
 
 @Getter
 @Setter
@@ -33,10 +34,11 @@ public class TDSBConnects {
     private TokenResponse authenticationInfo;
     private UserResponse userData;
     private Runnable readyCallback;
+    private Consumer<Throwable> errorConsumer;
     private boolean ready = false;
+
     public void login() {
         call(new TokenRequest(username, password, this)).thenAccept(response -> {
-            System.out.println("Logged in! - " + response);
             authenticationInfo = response;
             try {
                 call(new GetUserInfo()).thenAccept(resp -> {
@@ -44,24 +46,31 @@ public class TDSBConnects {
                     userData = resp;
                     ready = true;
                     if (readyCallback != null) readyCallback.run();
+                }).exceptionally(e -> {
+                    if (errorConsumer != null) errorConsumer.accept(e);
+                    return null;
                 });
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }).exceptionally((err)-> {
+        }).exceptionally((err) -> {
             err.printStackTrace();
+            if (errorConsumer != null) errorConsumer.accept(err);
             throw new RuntimeException(err);
         });
     }
 
-    public TDSBConnects(String username, String password, Runnable onReady) {
+    public TDSBConnects(String username, String password, Runnable onReady, Consumer<Throwable> error) {
         this.username = username;
         this.password = password;
         this.readyCallback = onReady;
+        this.errorConsumer = error;
+
         login();
     }
+
     public TDSBConnects(String username, String password) {
-        this(username, password, null);
+        this(username, password, null, null);
     }
 
     /**

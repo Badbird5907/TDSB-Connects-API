@@ -17,7 +17,6 @@ public interface APIRequest<T> {
 
     @SneakyThrows
     default CompletableFuture<T> send(TDSBConnects tdsbConnects) {
-        System.out.println("Sending request to " + getEndpoint());
 
         CompletableFuture<T> future = new CompletableFuture<>();
         String endpoint = getEndpoint();
@@ -36,17 +35,14 @@ public interface APIRequest<T> {
                 if (a != null) request = a;
 
                 Call call = CLIENT.newCall(request.build());
-                System.out.println("Queuing request");
                 call.enqueue(new Callback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                        System.out.println("Request failed");
                         future.completeExceptionally(e);
                     }
 
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                        System.out.println("Request succeeded");
                         try {
                             T res = APIRequest.this.onResponse(response, tdsbConnects);
                             future.complete(res);
@@ -67,7 +63,7 @@ public interface APIRequest<T> {
     default T onResponse(Response response, TDSBConnects tdsbConnects) {
         ResponseBody body = response.body();
         String bodyString = body == null ? "" : body.string();
-        validateResponse(bodyString);
+        preValidate(bodyString);
         System.out.println("Body: " + bodyString);
         Object obj = tdsbConnects.GSON.fromJson(bodyString, getGenericClass());
         //check if obj is an array
@@ -79,6 +75,7 @@ public interface APIRequest<T> {
         } else {
             injectTDSBConnects(obj, tdsbConnects); //TODO this sucks
         }
+        postValidate((T) obj);
         return (T) obj;
     }
 
@@ -113,7 +110,10 @@ public interface APIRequest<T> {
 
     Request.Builder addData(Request.Builder builder);
 
-    default void validateResponse(String bodyString) {
+    default void preValidate(String bodyString) {
+
+    }
+    default void postValidate(T obj) {
 
     }
 }
