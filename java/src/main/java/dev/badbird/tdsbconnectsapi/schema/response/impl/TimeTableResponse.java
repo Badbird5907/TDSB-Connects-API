@@ -4,9 +4,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.annotations.SerializedName;
 import dev.badbird.tdsbconnectsapi.schema.response.APIResponse;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class TimeTableResponse extends APIResponse {
     @SerializedName("HasError")
     private boolean hasError;
