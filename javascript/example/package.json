@@ -14,6 +14,6 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "tdsb-connects-api": "^1.0.7"
+    "tdsb-connects-api": "^1.0.8"
   }
 }
