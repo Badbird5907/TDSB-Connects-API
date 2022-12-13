@@ -20,7 +20,7 @@ export class TDSBConnectsAPI {
     this.call(TokenRequest.userPass(this.username, this.password, this)).then((response: TokenResponse) => {
       this.authenticationInfo = response;
     }).catch((error) => {
-      console.log(error.error);
+      console.error('Error logging in: ' + error);
     });
   }
 }
