@@ -1,27 +1,26 @@
-import {JsonProperty} from 'json-typescript-mapper';
+import {API_BASE, CLIENT_ID} from '../../../../index';
+import TDSBConnectsAPI from "../../../index";
 
-import {API_BASE, CLIENT_ID} from '../../index';
-import TDSBConnectsAPI from "../index";
-
-import {APIRequest, APIResponse} from './index';
+import {APIRequest, APIResponse} from '../../index';
 import axios from "axios";
-import FormData from "form-data";
+import querystring from "querystring";
+import {Expose} from "class-transformer";
 
 export class TokenResponse extends APIResponse {
-  @JsonProperty('access_token')
-  readonly accessToken: string;
-  @JsonProperty('token_type')
-  readonly tokenType: string; // Looks like it's always 'bearer'
-  @JsonProperty('expires_in')
-  readonly expiresIn: number; // Unix epoch seconds
-  @JsonProperty('refresh_token')
-  readonly refreshToken: string;
-  @JsonProperty('refresh_token_expires_in')
-  readonly refreshTokenExpiresIn: string; // Unix epoch seconds WHY IS IT A STRING WHOEVER DESIGNED THIS NEEDS TO BE FIRED
-  @JsonProperty('.issued')
-  readonly formattedIssued: string; // Like this: Tue, 13 Sep 2022 20:27:50 GMT
-  @JsonProperty('.expires')
-  readonly formattedExpires: string; // Same as above
+  @Expose({name: "access_token"})
+  public accessToken: string;
+  @Expose({name: "token_type"})
+  public tokenType: string; // Looks like it's always 'bearer'
+  @Expose({name: "expires_in"})
+  public expiresIn: number; // Unix epoch seconds
+  @Expose({name: "refresh_token"})
+  public refreshToken: string;
+  @Expose({name: "refresh_token_expires_in"})
+  public refreshTokenExpiresIn: string; // Unix epoch seconds WHY IS IT A STRING WHOEVER DESIGNED THIS NEEDS TO BE FIRED
+  @Expose({name: ".issued"})
+  public formattedIssued: string; // Like this: Tue, 13 Sep 2022 20:27:50 GMT
+  @Expose({name: ".expires"})
+  public formattedExpires: string; // Same as above
 
   isExpired(): boolean {
     return Date.now() / 1000 >= this.expiresIn;
@@ -106,40 +105,39 @@ export class TokenRequest extends APIRequest<TokenResponse> {
   async send(tdsbConnects: TDSBConnectsAPI): Promise<TokenResponse> {
     const endpoint: string = this.getEndpoint();
     if (endpoint.startsWith("/")) endpoint.substring(1);
-    console.log('Sending token request to endpoint: ', endpoint);
     return new Promise((resolve) => {
         if (this.refreshToken !== null && this.refreshToken !== undefined) {
-          const form = new FormData();
-          form.append('grant_type', 'refresh_token');
-          form.append('refresh_token', this.refreshToken);
-          axios.post(API_BASE + endpoint, form,
+          axios.post(API_BASE + endpoint, querystring.stringify({
+              grant_type: 'refresh_token',
+              refresh_token: this.refreshToken
+            }),
             {
               headers: {
                 "X-Client-App-Info": CLIENT_ID,
-                ...form.getHeaders()
+                'Content-Type': 'application/x-www-form-urlencoded'
               },
               transformRequest: (data) => data // Axios bug
             })
             .then((response) => {
-              resolve(response.data);
+              const data: any = this.handleResponse(response);
+              resolve(data);
             })
         } else {
-          const form = new FormData();
-          form.append('grant_type', 'password');
-          form.append('username', this.username);
-          form.append('password', this.password);
-
-          axios.post(API_BASE + endpoint, form,
+          axios.post(API_BASE + endpoint, querystring.stringify({
+              grant_type: 'password',
+              username: this.username,
+              password: this.password
+            }),
             {
               headers: {
                 "X-Client-App-Info": CLIENT_ID,
-                "Content-Type": "application/x-www-form-urlencoded",
-                ...form.getHeaders()
+                'Content-Type': 'application/x-www-form-urlencoded'
               },
               transformRequest: (data) => data // Axios bug
             })
             .then((response) => {
-              resolve(response.data);
+              const data: any = this.handleResponse(response);
+              resolve(data);
             })
         }
       }

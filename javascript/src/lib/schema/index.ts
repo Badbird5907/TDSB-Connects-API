@@ -1,8 +1,12 @@
+import 'reflect-metadata';
 import axios, {AxiosInstance} from "axios";
-import {deserialize} from 'json-typescript-mapper';
 
 import {API_BASE, CLIENT_ID} from "../../index";
 import TDSBConnectsAPI from "../index";
+import {TokenResponse} from "./impl/auth";
+import {
+  plainToInstance
+} from "class-transformer";
 
 
 export abstract class APIRequest<T> {
@@ -32,12 +36,40 @@ export abstract class APIRequest<T> {
   }
 
   sendReq(request: AxiosInstance, endpoint: string): Promise<T> {
-    return request.get(endpoint);
+    console.log("Sending request to " + endpoint);
+    return request.get(API_BASE + endpoint);
   }
 
   handleResponse(response: any): T {
-    return deserialize<T>(response.data, this.getResponseClass());
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const data: any = plainToInstance(this.getResponseClass(), response.data);
+    // print out all the functions in this class
+    /*
+    console.log("------------------------")
+    console.log('Data: ', data);
+    console.log("Response: ", response);
+    console.log('API Data: ', response.data);
+    console.log("Functions in this class:")
+    console.log(' - ' + this.getMethods(this).join('\n - '));
+    console.log('Functions in test: ')
+     const test = new TokenResponse();
+    console.log(' - ' + this.getMethods(test).join('\n - '));
+    console.log("------------------------")
+     */
+    return data;
   }
+  /*
+  getMethods = (obj) => {
+    const properties = new Set()
+    let currentObj = obj
+    do {
+      Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
+    } while ((currentObj = Object.getPrototypeOf(currentObj)))
+    return [...properties.keys()].filter(item => typeof obj[item] === 'function')
+  }
+   */
+
 
   buildRequest(endpoint: string, tdsbConnects: TDSBConnectsAPI): Promise<AxiosInstance> {
     if (!tdsbConnects.authenticationInfo) {
@@ -52,7 +84,8 @@ export abstract class APIRequest<T> {
       });
     }
     return new Promise((resolve, reject) => {
-      tdsbConnects.authenticationInfo.refreshIfNeeded(tdsbConnects)
+      const authInfo: TokenResponse = tdsbConnects.authenticationInfo;
+      authInfo.refreshIfNeeded(tdsbConnects)
         .then(() => {
           const headers: any = this.buildHeaders(tdsbConnects);
           resolve(axios.create({

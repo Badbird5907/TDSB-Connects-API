@@ -1,4 +1,4 @@
-import {TokenRequest, TokenResponse} from "./schema/token";
+import {TokenRequest, TokenResponse} from "./schema/impl/auth";
 import {APIRequest} from "./schema";
 
 export class TDSBConnectsAPI {
@@ -6,9 +6,12 @@ export class TDSBConnectsAPI {
   public password: string;
   public authenticationInfo: TokenResponse;
 
-  constructor(username: string, password: string) {
+  public ready: boolean = false as boolean;
+  public readyCallback: (() => void) | null = null;
+  constructor(username: string, password: string, readyCallback: () => void) {
     this.username = username;
     this.password = password;
+    this.readyCallback = readyCallback;
     this.connect();
   }
 
@@ -16,9 +19,11 @@ export class TDSBConnectsAPI {
     return request.send(this);
   }
 
-  async connect() {
+  connect() {
     this.call(TokenRequest.userPass(this.username, this.password, this)).then((response: TokenResponse) => {
       this.authenticationInfo = response;
+      this.ready = true;
+      if (this.readyCallback) this.readyCallback();
     }).catch((error) => {
       console.error('Error logging in: ' + error);
     });

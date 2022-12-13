@@ -1,11 +1,13 @@
-import { TokenResponse } from "./schema/token";
+import { TokenResponse } from "./schema/impl/auth";
 import { APIRequest } from "./schema";
 export declare class TDSBConnectsAPI {
     username: string;
     password: string;
     authenticationInfo: TokenResponse;
-    constructor(username: string, password: string);
+    ready: boolean;
+    readyCallback: (() => void) | null;
+    constructor(username: string, password: string, readyCallback: () => void);
     call(request: APIRequest<any>): Promise<any>;
-    connect(): Promise<void>;
+    connect(): void;
 }
 export default TDSBConnectsAPI;

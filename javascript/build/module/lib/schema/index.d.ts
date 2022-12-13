@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { AxiosInstance } from "axios";
 import TDSBConnectsAPI from "../index";
 export declare abstract class APIRequest<T> {

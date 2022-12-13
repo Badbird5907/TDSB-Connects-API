@@ -21,6 +21,8 @@
     "functional/no-let": "off",
     "functional/prefer-readonly-type": "off",
     "functional/immutable-data": "off",
+    "functional/no-return-void": "off",
+    "functional/no-loop-statement": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "eslint-comments/disable-enable-pair": [
