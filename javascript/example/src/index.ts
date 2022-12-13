@@ -1,4 +1,5 @@
 import {TDSBConnectsAPI} from 'tdsb-connects-api'
+
 const username = process.env.TDSB_USERNAME;
 const password = process.env.TDSB_PASSWORD;
 
@@ -8,4 +9,4 @@ if (username == null || password == null) {
 }
 
 const tdsbConnects = new TDSBConnectsAPI(username, password);
-console.log('TDSB Connects: ',tdsbConnects);
+console.log('TDSB Connects: ', tdsbConnects);

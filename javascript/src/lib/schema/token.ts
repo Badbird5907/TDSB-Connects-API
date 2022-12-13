@@ -108,7 +108,7 @@ export class TokenRequest extends APIRequest<TokenResponse> {
     if (endpoint.startsWith("/")) endpoint.substring(1);
     console.log('Sending token request to endpoint: ', endpoint);
     return new Promise((resolve) => {
-        if (this.refreshToken) {
+        if (this.refreshToken !== null && this.refreshToken !== undefined) {
           const form = new FormData();
           form.append('grant_type', 'refresh_token');
           form.append('refresh_token', this.refreshToken);
@@ -117,7 +117,8 @@ export class TokenRequest extends APIRequest<TokenResponse> {
               headers: {
                 "X-Client-App-Info": CLIENT_ID,
                 ...form.getHeaders()
-              }
+              },
+              transformRequest: (data) => data // Axios bug
             })
             .then((response) => {
               resolve(response.data);
@@ -133,7 +134,8 @@ export class TokenRequest extends APIRequest<TokenResponse> {
               headers: {
                 "X-Client-App-Info": CLIENT_ID,
                 ...form.getHeaders()
-              }
+              },
+              transformRequest: (data) => data // Axios bug
             })
             .then((response) => {
               resolve(response.data);
