@@ -5,6 +5,7 @@ import TDSBConnectsAPI from "../index";
 
 import {APIRequest, APIResponse} from './index';
 import axios from "axios";
+import FormData from "form-data";
 
 export class TokenResponse extends APIResponse {
   @JsonProperty('access_token')
@@ -103,25 +104,27 @@ export class TokenRequest extends APIRequest<TokenResponse> {
   async send(tdsbConnects: TDSBConnectsAPI): Promise<TokenResponse> {
     const endpoint: string = this.getEndpoint();
     if (endpoint.startsWith("/")) endpoint.substring(1);
-    console.log('Sending token request to endpoint: ',endpoint);
+    console.log('Sending token request to endpoint: ', endpoint);
     return new Promise((resolve) => {
         if (this.refreshToken) {
-          axios.post(API_BASE + endpoint, {
-              grant_type: "refresh_token",
-              refresh_token: this.refreshToken
-            },
+          const form = new FormData();
+          form.append('grant_type', 'refresh_token');
+          form.append('refresh_token', this.refreshToken);
+          axios.post(API_BASE + endpoint, form,
             {
               headers: this.buildHeaders(tdsbConnects)
+
             })
             .then((response) => {
               resolve(response.data);
             })
         } else {
-          axios.post(API_BASE + endpoint, {
-              grant_type: "password",
-              username: this.username,
-              password: this.password
-            },
+          const form = new FormData();
+          form.append('grant_type', 'password');
+          form.append('username', this.username);
+          form.append('password', this.password);
+
+          axios.post(API_BASE + endpoint, form,
             {
               headers: this.buildHeaders(tdsbConnects)
             })
