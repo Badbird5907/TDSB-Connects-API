@@ -11,22 +11,6 @@ import okhttp3.Request;
 @Getter
 @Setter
 public class TokenRequest implements APIRequest<TokenResponse> {
-    private String username, password;
-
-    private String refreshToken = null;
-
-    private TDSBConnects tdsbConnects;
-
-    public TokenRequest(String username, String password, TDSBConnects tdsbConnects) {
-        this.username = username;
-        this.password = password;
-        this.tdsbConnects = tdsbConnects;
-    }
-
-    public TokenRequest(String refreshToken, TDSBConnects tdsbConnects) {
-        this.refreshToken = refreshToken;
-        this.tdsbConnects = tdsbConnects;
-    }
 
     @Override
     public String getEndpoint() {
