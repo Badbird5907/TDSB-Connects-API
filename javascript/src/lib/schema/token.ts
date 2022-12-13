@@ -133,6 +133,7 @@ export class TokenRequest extends APIRequest<TokenResponse> {
             {
               headers: {
                 "X-Client-App-Info": CLIENT_ID,
+                "Content-Type": "application/x-www-form-urlencoded",
                 ...form.getHeaders()
               },
               transformRequest: (data) => data // Axios bug
