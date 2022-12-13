@@ -1,4 +1,4 @@
-import TDSBConnectsAPI from 'tdsb-connects-api/src/lib/index';
+import TDSBConnectsAPI from "tdsb-connects-api/src/index.js";
 const username = process.env.TDSB_USERNAME;
 const password = process.env.TDSB_PASSWORD;
 if (username == null || password == null) {

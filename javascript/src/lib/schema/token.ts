@@ -1,6 +1,6 @@
 import {JsonProperty} from 'json-typescript-mapper';
 
-import {API_BASE, CLIENT_ID} from "../../index";
+import {API_BASE, CLIENT_ID} from "../../../index";
 import TDSBConnectsAPI from "../index";
 
 import {APIRequest, APIResponse} from './index';
