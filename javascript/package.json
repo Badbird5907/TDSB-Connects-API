@@ -1,6 +1,6 @@
 {
   "name": "tdsb-connects-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A wrapper library to send requests to the TDSB Connects API (Reverse Engineered)",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",

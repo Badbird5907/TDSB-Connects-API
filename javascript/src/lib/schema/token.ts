@@ -101,6 +101,8 @@ export class TokenRequest extends APIRequest<TokenResponse> {
     return TokenResponse;
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore - we are overriding the method but not using the parameter
   async send(tdsbConnects: TDSBConnectsAPI): Promise<TokenResponse> {
     const endpoint: string = this.getEndpoint();
     if (endpoint.startsWith("/")) endpoint.substring(1);
@@ -112,8 +114,10 @@ export class TokenRequest extends APIRequest<TokenResponse> {
           form.append('refresh_token', this.refreshToken);
           axios.post(API_BASE + endpoint, form,
             {
-              headers: this.buildHeaders(tdsbConnects)
-
+              headers: {
+                "X-Client-App-Info": CLIENT_ID,
+                ...form.getHeaders()
+              }
             })
             .then((response) => {
               resolve(response.data);
@@ -126,7 +130,10 @@ export class TokenRequest extends APIRequest<TokenResponse> {
 
           axios.post(API_BASE + endpoint, form,
             {
-              headers: this.buildHeaders(tdsbConnects)
+              headers: {
+                "X-Client-App-Info": CLIENT_ID,
+                ...form.getHeaders()
+              }
             })
             .then((response) => {
               resolve(response.data);
