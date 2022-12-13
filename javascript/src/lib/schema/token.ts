@@ -86,7 +86,7 @@ export class TokenRequest extends APIRequest<TokenResponse> {
   }
 
   getEndpoint(): string {
-    return '/token';
+    return 'token';
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
