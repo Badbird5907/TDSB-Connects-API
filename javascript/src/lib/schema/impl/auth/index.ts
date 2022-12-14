@@ -110,10 +110,16 @@ export class TokenRequest extends APIRequest<TokenResponse> {
           //const form = new FormData();
           //form.append('grant_type', 'refresh_token');
           //form.append('refresh_token', this.refreshToken);
+
+          /*
           const params = new url.URLSearchParams({
             grant_type: 'refresh_token',
             refresh_token: this.refreshToken
           });
+           */
+          const params = new url.URLSearchParams();
+          params.append('grant_type', 'refresh_token');
+          params.append('refresh_token', this.refreshToken);
 
           axios.post(API_BASE + endpoint, params.toString(),
             {
@@ -132,11 +138,18 @@ export class TokenRequest extends APIRequest<TokenResponse> {
           form.append('grant_type', 'password');
           form.append('username', this.username);
           form.append('password', this.password);*/
+
+          /*
           const params = new url.URLSearchParams({
             grant_type: 'password',
             username: this.username,
             password: this.password
           });
+           */
+          const params = new url.URLSearchParams();
+          params.append('grant_type', 'password');
+          params.append('username', this.username);
+          params.append('password', this.password);
 
           axios.post(API_BASE + endpoint, params.toString(),
             {
