@@ -4,7 +4,6 @@ import TDSBConnectsAPI from "../../../index";
 import {APIRequest, APIResponse} from '../../index';
 import axios from "axios";
 import {Expose} from "class-transformer";
-import {URLSearchParams} from 'url';
 
 export class TokenResponse extends APIResponse {
   @Expose({name: "access_token"})
