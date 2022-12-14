@@ -104,7 +104,7 @@ export class TokenRequest extends APIRequest<TokenResponse> {
   async send(tdsbConnects: TDSBConnectsAPI): Promise<TokenResponse> {
     const endpoint: string = this.getEndpoint();
     if (endpoint.startsWith("/")) endpoint.substring(1);
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         if (this.refreshToken !== null && this.refreshToken !== undefined) {
           //const form = new FormData();
           //form.append('grant_type', 'refresh_token');
@@ -131,7 +131,10 @@ export class TokenRequest extends APIRequest<TokenResponse> {
             .then((response) => {
               const data: any = this.handleResponse(response);
               resolve(data);
-            })
+            }).catch(err => {
+            console.error(err);
+            reject(err);
+          })
         } else {
           /*const form = new FormData();
           form.append('grant_type', 'password');
@@ -161,6 +164,9 @@ export class TokenRequest extends APIRequest<TokenResponse> {
             .then((response) => {
               const data: any = this.handleResponse(response);
               resolve(data);
+            }).catch(err => {
+              console.error(err);
+              reject(err);
             })
         }
       }
