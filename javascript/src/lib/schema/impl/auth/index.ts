@@ -4,7 +4,7 @@ import TDSBConnectsAPI from "../../../index";
 import {APIRequest, APIResponse} from '../../index';
 import axios from "axios";
 import {Expose} from "class-transformer";
-import url from 'url';
+import {URLSearchParams} from 'url';
 
 export class TokenResponse extends APIResponse {
   @Expose({name: "access_token"})
@@ -117,7 +117,7 @@ export class TokenRequest extends APIRequest<TokenResponse> {
             refresh_token: this.refreshToken
           });
            */
-          const params = new url.URLSearchParams();
+          const params = new URLSearchParams();
           params.append('grant_type', 'refresh_token');
           params.append('refresh_token', this.refreshToken);
 
@@ -146,7 +146,7 @@ export class TokenRequest extends APIRequest<TokenResponse> {
             password: this.password
           });
            */
-          const params = new url.URLSearchParams();
+          const params = new URLSearchParams();
           params.append('grant_type', 'password');
           params.append('username', this.username);
           params.append('password', this.password);
