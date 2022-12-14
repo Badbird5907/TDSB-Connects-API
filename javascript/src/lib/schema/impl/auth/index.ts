@@ -3,8 +3,8 @@ import TDSBConnectsAPI from "../../../index";
 
 import {APIRequest, APIResponse} from '../../index';
 import axios from "axios";
-import querystring from "querystring";
 import {Expose} from "class-transformer";
+import FormData from 'form-data';
 
 export class TokenResponse extends APIResponse {
   @Expose({name: "access_token"})
@@ -107,10 +107,11 @@ export class TokenRequest extends APIRequest<TokenResponse> {
     if (endpoint.startsWith("/")) endpoint.substring(1);
     return new Promise((resolve) => {
         if (this.refreshToken !== null && this.refreshToken !== undefined) {
-          axios.post(API_BASE + endpoint, querystring.stringify({
-              grant_type: 'refresh_token',
-              refresh_token: this.refreshToken
-            }),
+          const form = new FormData();
+          form.append('grant_type', 'refresh_token');
+          form.append('refresh_token', this.refreshToken);
+
+          axios.post(API_BASE + endpoint, form,
             {
               headers: {
                 "X-Client-App-Info": CLIENT_ID,
@@ -123,11 +124,12 @@ export class TokenRequest extends APIRequest<TokenResponse> {
               resolve(data);
             })
         } else {
-          axios.post(API_BASE + endpoint, querystring.stringify({
-              grant_type: 'password',
-              username: this.username,
-              password: this.password
-            }),
+          const form = new FormData();
+          form.append('grant_type', 'password');
+          form.append('username', this.username);
+          form.append('password', this.password);
+
+          axios.post(API_BASE + endpoint,form,
             {
               headers: {
                 "X-Client-App-Info": CLIENT_ID,
