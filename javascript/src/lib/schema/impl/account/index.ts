@@ -38,8 +38,10 @@ export class UserResponse extends APIResponse {
   @Expose({name: "Role"})
   public role: number[];
   @Expose({name: "SchoolCodeList"})
+  @Type(() => SchoolCodeList)
   public schoolCodeList: SchoolCodeList[];
   @Expose({name: "SchoolList"})
+  @Type(() => SchoolList)
   public schoolList: SchoolList[];
   @Expose({name: "Email"})
   public email: string;

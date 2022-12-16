@@ -1,5 +1,5 @@
 import TDSBConnectsAPI from "../lib";
-import {Course, TimeTableRequest} from "../lib/schema/impl/timetable";
+import {UserRequest} from "../lib/schema/impl/account";
 
 const username = process.env.TDSB_USERNAME;
 const password = process.env.TDSB_PASSWORD;
@@ -24,6 +24,13 @@ const tdsbConnects = new TDSBConnectsAPI(username, password, () => {
 
   setTimeout(() => {
     console.log("Requesting user info...");
+    tdsbConnects.call(new UserRequest()).then((response) => {
+      console.log("School code: ", response.getSchoolCode());
+    }).catch(error => {
+      console.error(error);
+    })
+    /*
+    console.log('School ID: ', )
     // ddmmyyyy
     const response = tdsbConnects.call(new TimeTableRequest(process.env.SCHOOL_ID, "15122022"));
     response.then((user) => {
@@ -34,5 +41,6 @@ const tdsbConnects = new TDSBConnectsAPI(username, password, () => {
     }).catch(err => {
       console.error(err);
     });
+     */
   }, 1000);
 });
