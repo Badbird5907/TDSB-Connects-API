@@ -24,11 +24,13 @@ const tdsbConnects = new TDSBConnectsAPI(username, password, () => {
 
   setTimeout(() => {
     console.log("Requesting user info...");
-    tdsbConnects.call(new UserRequest()).then((response) => {
-      console.log("School code: ", response.getSchoolCode());
-    }).catch(error => {
-      console.error(error);
-    })
+    for (let i = 0; i < 3; i++) {
+      tdsbConnects.call(new UserRequest()).then((response) => {
+        console.log("School code: ", response.getSchoolCode());
+      }).catch(error => {
+        console.error(error);
+      })
+    }
     /*
     console.log('School ID: ', )
     // ddmmyyyy

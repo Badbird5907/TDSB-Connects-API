@@ -18,6 +18,10 @@ export class TimeTableRequest extends APIRequest<TimetableResponse> {
   getResponseClass(): any {
     return TimetableResponse;
   }
+
+  useCache(): boolean {
+    return true;
+  }
 }
 
 export class TimetableResponse extends APIResponse {

@@ -8,7 +8,7 @@ export class TDSBConnectsAPI {
 
   public ready: boolean = false as boolean;
   public readyCallback: (() => void) | null = null;
-  public useCache: boolean = true as boolean;
+  public useCache: boolean = false as boolean; // Doesn't work
   constructor(username: string, password: string, readyCallback: () => void) {
     this.username = username;
     this.password = password;

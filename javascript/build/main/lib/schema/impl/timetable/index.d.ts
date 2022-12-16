@@ -5,6 +5,7 @@ export declare class TimeTableRequest extends APIRequest<TimetableResponse> {
     constructor(schoolCode: string, date: string);
     getEndpoint(): string;
     getResponseClass(): any;
+    useCache(): boolean;
 }
 export declare class TimetableResponse extends APIResponse {
     hasError: boolean;
