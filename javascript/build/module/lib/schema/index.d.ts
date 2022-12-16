@@ -10,6 +10,7 @@ export declare abstract class APIRequest<T> {
     buildHeaders(tdsbConnects: TDSBConnectsAPI): any;
     private addData;
     abstract getResponseClass(): any;
+    useCache(): boolean;
 }
 export declare class APIResponse {
 }

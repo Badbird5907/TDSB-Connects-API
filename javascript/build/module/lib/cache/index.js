@@ -1,0 +1,6 @@
+import { setupCache } from "axios-cache-adapter";
+const cache = setupCache({
+    maxAge: 30 * 60 * 1000 // 15 minutes
+});
+export default cache;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbGliL2NhY2hlL2luZGV4LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBQyxVQUFVLEVBQUMsTUFBTSxxQkFBcUIsQ0FBQztBQUUvQyxNQUFNLEtBQUssR0FBRyxVQUFVLENBQUM7SUFDdkIsTUFBTSxFQUFFLEVBQUUsR0FBRyxFQUFFLEdBQUcsSUFBSSxDQUFDLGFBQWE7Q0FDckMsQ0FBQyxDQUFBO0FBQ0YsZUFBZSxLQUFLLENBQUEifQ==

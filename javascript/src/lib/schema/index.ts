@@ -4,9 +4,8 @@ import axios, {AxiosInstance} from "axios";
 import {API_BASE, CLIENT_ID} from "../../index";
 import TDSBConnectsAPI from "../index";
 import {TokenResponse} from "./impl/auth";
-import {
-  plainToInstance
-} from "class-transformer";
+import {plainToInstance} from "class-transformer";
+import cache from "../cache";
 
 
 export abstract class APIRequest<T> {
@@ -59,6 +58,7 @@ export abstract class APIRequest<T> {
      */
     return data;
   }
+
   /*
   getMethods = (obj) => {
     const properties = new Set()
@@ -75,12 +75,22 @@ export abstract class APIRequest<T> {
     if (!tdsbConnects.authenticationInfo) {
       const headers: any = this.buildHeaders(tdsbConnects);
       return new Promise((resolve) => {
-        resolve(axios.create({
-          baseURL: API_BASE + endpoint,
-          headers: {
-            ...headers
-          }
-        }));
+        if (tdsbConnects.useCache && this.useCache()) {
+          resolve(axios.create({
+            baseURL: API_BASE + endpoint,
+            adapter: cache.adapter,
+            headers: {
+              ...headers
+            }
+          }));
+        } else {
+          resolve(axios.create({
+            baseURL: API_BASE + endpoint,
+            headers: {
+              ...headers
+            }
+          }));
+        }
       });
     }
     return new Promise((resolve, reject) => {
@@ -88,12 +98,22 @@ export abstract class APIRequest<T> {
       authInfo.refreshIfNeeded(tdsbConnects)
         .then(() => {
           const headers: any = this.buildHeaders(tdsbConnects);
-          resolve(axios.create({
-            baseURL: API_BASE + endpoint,
-            headers: {
-              ...headers
-            }
-          }));
+          if (tdsbConnects.useCache && this.useCache()) {
+            resolve(axios.create({
+              baseURL: API_BASE + endpoint,
+              adapter: cache.adapter,
+              headers: {
+                ...headers
+              }
+            }));
+          } else {
+            resolve(axios.create({
+              baseURL: API_BASE + endpoint,
+              headers: {
+                ...headers
+              }
+            }));
+          }
         })
         .catch(reject);
     });
@@ -113,6 +133,10 @@ export abstract class APIRequest<T> {
   }
 
   abstract getResponseClass(): any;
+
+  useCache(): boolean {
+    return true;
+  }
 }
 
 export class APIResponse {
