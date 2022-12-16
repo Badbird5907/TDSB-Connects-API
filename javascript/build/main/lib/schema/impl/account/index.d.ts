@@ -38,6 +38,7 @@ export declare class UserResponse extends APIResponse {
     isStaff: boolean;
     isStudent: boolean;
     timetableCache: string;
+    getSchoolCode(): number;
 }
 export declare class SchoolCodeList {
     assignedRoleId: number;

@@ -12,178 +12,183 @@ export class UserRequest extends APIRequest<UserResponse> {
 }
 
 export class StudentInfo extends APIResponse {
-  @Expose({ name: "PersonId" })
+  @Expose({name: "PersonId"})
   public personId: string;
-  @Expose({ name: "LastName" })
+  @Expose({name: "LastName"})
   public lastName: string;
-  @Expose({ name: "FirstName" })
+  @Expose({name: "FirstName"})
   public firstName: string;
-  @Expose({ name: "Gender" })
+  @Expose({name: "Gender"})
   public gender: string;
-  @Expose({ name: "BirthDate" })
+  @Expose({name: "BirthDate"})
   public birthDate: string;
-  @Expose({ name: "Age" })
+  @Expose({name: "Age"})
   public age: string;
-  @Expose({ name: "SchoolYearTrack" })
+  @Expose({name: "SchoolYearTrack"})
   public schoolYearTrack: string;
-  @Expose({ name: "CurrentGradeLevel" })
+  @Expose({name: "CurrentGradeLevel"})
   public currentGradeLevel: string;
 }
+
 export class UserResponse extends APIResponse {
-  @Expose({ name: "UserId" })
+  @Expose({name: "UserId"})
   public userId: string;
-  @Expose({ name: "UserName" })
+  @Expose({name: "UserName"})
   public userName: string;
-  @Expose({ name: "Role" })
+  @Expose({name: "Role"})
   public role: number[];
-  @Expose({ name: "SchoolCodeList" })
+  @Expose({name: "SchoolCodeList"})
   public schoolCodeList: SchoolCodeList[];
-  @Expose({ name: "SchoolList" })
+  @Expose({name: "SchoolList"})
   public schoolList: SchoolList[];
-  @Expose({ name: "Email" })
+  @Expose({name: "Email"})
   public email: string;
-  @Expose({ name: "PrincipalEmailsList" })
+  @Expose({name: "PrincipalEmailsList"})
   public principalEmailsList: any;
-  @Expose({ name: "VicePrincipalEmailsList" })
+  @Expose({name: "VicePrincipalEmailsList"})
   public vicePrincipalEmailsList: any;
-  @Expose({ name: "SuperintendentEmailsList" })
+  @Expose({name: "SuperintendentEmailsList"})
   public superintendentEmailsList: any;
-  @Expose({ name: "Gender" })
+  @Expose({name: "Gender"})
   /**
    * @deprecated Empty in request
    */
   public gender: string;
-  @Expose({ name: "Age" })
+  @Expose({name: "Age"})
   /**
    * @deprecated Empty in request
    */
   public age: string;
-  @Expose({ name: "D2LUserId" })
+  @Expose({name: "D2LUserId"})
   public d2LUserId: number;
-  @Expose({ name: "TrilliumPersonId" })
+  @Expose({name: "TrilliumPersonId"})
   /**
    * @deprecated Empty in request
    */
   public trilliumPersonId: string;
-  @Expose({ name: "FirstName" })
+  @Expose({name: "FirstName"})
   /**
    * @deprecated Empty in request
    */
   public firstName: string;
-  @Expose({ name: "LastName" })
+  @Expose({name: "LastName"})
   /**
    * @deprecated Empty in request
    */
   public lastName: string;
-  @Expose({ name: "BirthDate" })
+  @Expose({name: "BirthDate"})
   /**
    * @deprecated Empty in request
    */
   public birthDate: string;
 
-  @Expose({ name: "Picture" })
+  @Expose({name: "Picture"})
   public picture: any;
 
-  @Expose({ name: "Thumbnail" })
+  @Expose({name: "Thumbnail"})
   public thumbnail: any;
-  @Expose({ name: "UserNavMenus" })
+  @Expose({name: "UserNavMenus"})
   public userNavMenus: UserNavMenu[];
-  @Expose({ name: "UserFeaturePermissions" })
+  @Expose({name: "UserFeaturePermissions"})
   public userFeaturePermissions: UserFeaturePermission[];
-  @Expose({ name: "StudentInfo" })
+  @Expose({name: "StudentInfo"})
   @Type(() => StudentInfo)
   /**
    * @deprecated Empty in request
    */
   public studentInfo: StudentInfo;
-  @Expose({ name: "IsStaff" })
+  @Expose({name: "IsStaff"})
   public isStaff: boolean;
-  @Expose({ name: "IsStudent" })
+  @Expose({name: "IsStudent"})
   public isStudent: boolean;
-  @Expose({ name: "TimetableCache" })
+  @Expose({name: "TimetableCache"})
   public timetableCache: string;
+
+  getSchoolCode(): number {
+    return parseInt(this.schoolCodeList[0].schoolCode); // thanks TDSB!
+  }
 }
 
 export class SchoolCodeList {
-  @Expose({ name: "AssignedRoleId" })
+  @Expose({name: "AssignedRoleId"})
   public assignedRoleId: number;
-  @Expose({ name: "SchoolCode" })
+  @Expose({name: "SchoolCode"})
   public schoolCode: string;
-  @Expose({ name: "StudentInfo" })
+  @Expose({name: "StudentInfo"})
   @Type(() => StudentInfo)
   public studentInfo: StudentInfo;
 }
 
 export class UserMenu {
-  @Expose({ name: "Id" })
+  @Expose({name: "Id"})
   public id: number;
-  @Expose({ name: "Title" })
+  @Expose({name: "Title"})
   public title: string;
-  @Expose({ name: "IconSource" })
+  @Expose({name: "IconSource"})
   public iconSource: string;
-  @Expose({ name: "LaunchBackgroundColor" })
+  @Expose({name: "LaunchBackgroundColor"})
   public launchBackgroundColor: string;
-  @Expose({ name: "TargetType" })
+  @Expose({name: "TargetType"})
   public targetType: any;
-  @Expose({ name: "TargetTypeParameter" })
+  @Expose({name: "TargetTypeParameter"})
   public targetTypeParameter: any;
-  @Expose({ name: "RequiredPermissionName" })
+  @Expose({name: "RequiredPermissionName"})
   public requiredPermissionName: string;
-  @Expose({ name: "DisplayOrder" })
+  @Expose({name: "DisplayOrder"})
   public displayOrder: number;
-  @Expose({ name: "ShowInBottomToolBar" })
+  @Expose({name: "ShowInBottomToolBar"})
   public showInBottomToolBar: boolean;
-  @Expose({ name: "ShowInLaunchPad" })
+  @Expose({name: "ShowInLaunchPad"})
   public showInLaunchPad: boolean;
-  @Expose({ name: "OpenInBrowser" })
+  @Expose({name: "OpenInBrowser"})
   public openInBrowser: boolean;
-  @Expose({ name: "BrowserUrl" })
+  @Expose({name: "BrowserUrl"})
   public browserUrl: string;
 }
 
 export class UserNavMenu {
-  @Expose({ name: "SchoolCode" })
+  @Expose({name: "SchoolCode"})
   public schoolCode: string;
-  @Expose({ name: "UserRoleId" })
+  @Expose({name: "UserRoleId"})
   public userRoleId: number;
-  @Expose({ name: "UserMenus" })
+  @Expose({name: "UserMenus"})
   public userMenus: UserMenu[];
 }
 
 export class UserFeaturePermission {
-  @Expose({ name: "FeatureId" })
+  @Expose({name: "FeatureId"})
   public featureId: number;
-  @Expose({ name: "PermissionTypeId" })
+  @Expose({name: "PermissionTypeId"})
   public permissionTypeId: number;
 }
 
 export class UserFeaturePermissions {
-  @Expose({ name: "UserRoleId" })
+  @Expose({name: "UserRoleId"})
   public userRoleId: number;
-  @Expose({ name: "UserFeaturePermissions" })
+  @Expose({name: "UserFeaturePermissions"})
   public userFeaturePermissions: UserFeaturePermission[];
 }
 
 export class SchoolList {
-  @Expose({ name: "SchoolCode" })
+  @Expose({name: "SchoolCode"})
   public schoolCode: number;
-  @Expose({ name: "SchoolName" })
+  @Expose({name: "SchoolName"})
   public schoolName: string;
-  @Expose({ name: "IsOnboard" })
+  @Expose({name: "IsOnboard"})
   public isOnboard: boolean;
 }
 
 export class SchoolSetting {
-  @Expose({ name: "Id" })
+  @Expose({name: "Id"})
   public id: number;
-  @Expose({ name: "SchoolCode" })
+  @Expose({name: "SchoolCode"})
   public schoolCode: string;
-  @Expose({ name: "CurrentSession" })
+  @Expose({name: "CurrentSession"})
   public currentSession: string;
-  @Expose({ name: "SchoolYearTrack" })
+  @Expose({name: "SchoolYearTrack"})
   public schoolYearTrack: string;
-  @Expose({ name: "SessionStart" })
+  @Expose({name: "SessionStart"})
   public sessionStart: string;
-  @Expose({ name: "SessionEnd" })
+  @Expose({name: "SessionEnd"})
   public sessionEnd: string;
 }
