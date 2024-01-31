@@ -1,0 +1,29 @@
+{
+  "name": "TDSBConnects",
+  "version": "2.0.0",
+  "description": "A wrapper library to send requests to the TDSB Connects API (Reverse Engineered)",
+  "main": "index.js",
+  "repository": "https://github.com/Badbird5907/TDSB-Connects-API/",
+  "author": "Badbird5907",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "build": "tsc",
+    "test": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.13",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "ts-node": "^10.9.2"
+  }
+}
